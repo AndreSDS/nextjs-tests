@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "drizzle:generate": "dotenv -e .env.development -- drizzle-kit generate",
-    "drizzle:migrate": "dotenv -e .env.development -- drizzle-kit migrate",
+    "drizzle:migrate:dev": "dotenv -e .env.development -- drizzle-kit migrate",
+    "drizzle:migrate:production": "dotenv -e .env.production -- drizzle-kit migrate",
     "dev:test": "dotenv -e .env.e2e -- next dev",
     "start:test": "dotenv -e .env.e2e -- next start",
     "test": "dotenv -e .env.test -- vitest run --bail 1",
@@ -25,6 +26,7 @@
     "test:e2e:report": "dotenv -e .env.e2e -- playwright show-report"
   },
   "dependencies": {
+    "@libsql/client": "^0.15.12",
     "better-sqlite3": "^12.2.0",
     "clsx": "^2.1.1",
     "data-fns": "^1.1.0",
@@ -48,7 +50,7 @@
     "@vitest/coverage-v8": "^3.2.4",
     "dotenv": "^17.2.1",
     "dotenv-cli": "^10.0.0",
-    "drizzle-kit": "^0.18.1",
+    "drizzle-kit": "^0.31.4",
     "eslint": "^9",
     "eslint-config-next": "15.4.6",
     "jsdom": "^26.1.0",
