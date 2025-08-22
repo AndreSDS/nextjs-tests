@@ -1,8 +1,8 @@
 import * as sanitizeStrMod from "@/utils/sanitize-str";
 import * as validationTodoDescriptionMod from "@/core/todo/schemas/validate-todo-description";
 import * as makeNewTodoMod from "@/core/todo/factories/make-new-todo";
-import { InvalidTodo, makeValidatedTodo, ValidTodo } from "./make-validated-todo";
-import { Todo } from "../schemas/todo.contract";
+import { makeValidatedTodo } from "./make-validated-todo";
+import { InvalidTodo, Todo, ValidTodo } from "../schemas/todo.contract";
 import { randomUUID } from "crypto";
 
 function makeMocks(description: string) {
@@ -56,9 +56,9 @@ describe("makeValidatedTodo (unit)", () => {
         const result = makeValidatedTodo(description) as ValidTodo
 
         expect(result.success).toBe(true)
-        expect(result.data.id).toBe(todo.id)
-        expect(result.data.description).toBe(todo.description)
-        expect(result.data.createdAt).toStrictEqual(todo.createdAt)
+        expect(result.todo.id).toBe(todo.id)
+        expect(result.todo.description).toBe(todo.description)
+        expect(result.todo.createdAt).toStrictEqual(todo.createdAt)
     })
 
     it("should retornar validateDescription.error if validation failed", () => {
