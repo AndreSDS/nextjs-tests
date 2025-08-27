@@ -11,7 +11,7 @@ export function validateTodoDescription(description: string): ValidadeTodoDescri
     }
 
     if (description.length > 50) {
-        errors.push('Description must be at most 50 characters long')
+        errors.push('Description must be at most 50 characters long.')
     }
 
     return {
