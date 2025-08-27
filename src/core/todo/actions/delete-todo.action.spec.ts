@@ -1,7 +1,5 @@
-import * as deleteTodoUseCaseMod from '@/core/todo/useCases/delete-todo.usecase';
-import { InvalidTodo, ValidTodo } from '../schemas/todo.contract';
 import { deleteTodoAction } from './delete-todo.action';
-import { revalidatePath } from 'next/cache';
+import { makeTestTodoMocks } from '@/utils/make-test-todo-mocks';
 
 vi.mock('next/cache', () => {
     return {
@@ -9,47 +7,18 @@ vi.mock('next/cache', () => {
     }
 })
 
-const mockCreateTodoUseCase = () => {
-    const todoMock = {
-        id: 'id',
-        description: 'description',
-        createdAt: 'createdAt',
-    }
-
-    const failResult = {
-        success: false,
-        errors: ['Todo do not exists']
-    } as InvalidTodo
-
-    const successResult = {
-        success: true, todo: todoMock
-    } as ValidTodo
-
-    const deleteTodoUseCaseSpy = vi.spyOn(deleteTodoUseCaseMod, 'deleteTodoUseCase').mockResolvedValue(successResult);
-
-    const revalidatePathMocked = vi.mocked(revalidatePath);
-
-    return {
-        deleteTodoUseCaseSpy,
-        todoMock,
-        failResult,
-        successResult,
-        revalidatePathMocked
-    }
-}
-
 describe('deleteTOdoAction (unit)', () => {
     it('should call deleteTodoUseCase with the correct values', async () => {
-        const { deleteTodoUseCaseSpy, todoMock } = mockCreateTodoUseCase();
+        const { useCaseSpy, todoMock } = makeTestTodoMocks('delete');
         const expetectedParam = todoMock.id;
 
         await deleteTodoAction(expetectedParam);
 
-        expect(deleteTodoUseCaseSpy).toHaveBeenCalledExactlyOnceWith(expetectedParam);
+        expect(useCaseSpy).toHaveBeenCalledExactlyOnceWith(expetectedParam);
     });
 
     it('should calll revalidatePath if useCase return success', async () => {
-        const { revalidatePathMocked, todoMock } = mockCreateTodoUseCase()
+        const { revalidatePathMocked, todoMock } = makeTestTodoMocks('delete')
         const todoId = todoMock.id;
 
         await deleteTodoAction(todoId);
@@ -58,7 +27,7 @@ describe('deleteTOdoAction (unit)', () => {
     });
 
     it('should return same value from useCase if succeeds', async () => {
-        const { todoMock, successResult } = mockCreateTodoUseCase()
+        const { todoMock, successResult } = makeTestTodoMocks('delete')
 
         const result = await deleteTodoAction(todoMock.id);
 
@@ -66,9 +35,9 @@ describe('deleteTOdoAction (unit)', () => {
     });
 
     it('should return same value from useCase if fails', async () => {
-        const { deleteTodoUseCaseSpy, failResult } = mockCreateTodoUseCase()
+        const { useCaseSpy, failResult } = makeTestTodoMocks('delete')
 
-        deleteTodoUseCaseSpy.mockResolvedValueOnce(failResult);
+        useCaseSpy.mockResolvedValueOnce(failResult);
 
         const result = await deleteTodoAction("");
 
