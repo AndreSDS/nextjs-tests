@@ -43,3 +43,6 @@ next-env.d.ts
 
 # databe
 *.sqlite3
+
+*storybook.log
+storybook-static
