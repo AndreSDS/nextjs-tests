@@ -1,14 +1,16 @@
+import { sanitizeStr } from "@/utils/sanitize-str";
 import { defaultTodoRepository } from "../repositories/default.repository";
 
 export async function deleteTodoUseCase(id: string) {
-    const todoToDelete = await defaultTodoRepository.remove(id)
+    const cleanId = sanitizeStr(id);
 
-    if (!todoToDelete.success) {
+    if(!cleanId) {
         return {
             success: false,
-            errors: ['Todo do not exists']
+            errors: ['Invalid id']
         }
     }
 
+    const todoToDelete = await defaultTodoRepository.remove(id)
     return todoToDelete;
 };
