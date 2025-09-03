@@ -6,4 +6,7 @@ html, body, #root, #storybook-root {
 
 body {
     background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
